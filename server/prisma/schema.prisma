@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  password String
+  role  String  @default("student") // student, parent, faculty, admin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  student Student?
+  results Result[]
+}
+
+model Student {
+  id        Int     @id @default(autoincrement())
+  rollNumber String @unique
+  year      Int     // 1, 2, 3, 4
+  userId    Int     @unique
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  results Result[]
+}
+
+model Subject {
+  id      Int     @id @default(autoincrement())
+  name    String  @unique
+  credits Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  results Result[]
+}
+
+model Semester {
+  id         Int     @id @default(autoincrement())
+  semesterNo Int
+  year       Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  exams Exam[]
+
+  @@unique([semesterNo, year])
+}
+
+model Exam {
+  id          Int     @id @default(autoincrement())
+  examType    String  // midterm, final, quiz
+  totalMarks  Int
+  semesterId  Int
+  semester    Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  results Result[]
+}
+
+model Result {
+  id        Int     @id @default(autoincrement())
+  marks     Float
+  grade     String  // A, B, C, D, F
+  status    String  @default("pass") // pass, fail
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subjectId Int
+  subject   Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  examId    Int
+  exam      Exam    @relation(fields: [examId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, subjectId, examId])
+}
