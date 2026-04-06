@@ -1,17 +1,9 @@
-// Utility for PDF export functionality
-
-/**
- * Export results to CSV format (can be opened in Excel or converted to PDF)
- * @param {Array} results - Array of result objects
- * @param {String} fileName - Name of the file to be downloaded
- */
 export const exportToCSV = (results, fileName = 'results.csv') => {
   if (!results || results.length === 0) {
     alert('No results to export');
     return;
   }
 
-  // Define CSV headers
   const headers = ['Subject', 'Exam Type', 'Marks', 'Grade', 'Status', 'Semester No'];
 
   // Map results to CSV rows
@@ -24,12 +16,10 @@ export const exportToCSV = (results, fileName = 'results.csv') => {
     r.exam.semester.semesterNo
   ]);
 
-  // Combine headers and rows
   const csvContent = [
     headers.join(','),
     ...rows.map(row => 
       row.map(cell => {
-        // Handle cells with commas by wrapping in quotes
         if (typeof cell === 'string' && cell.includes(',')) {
           return `"${cell}"`;
         }
@@ -38,15 +28,9 @@ export const exportToCSV = (results, fileName = 'results.csv') => {
     )
   ].join('\n');
 
-  // Create blob and download
   downloadCSV(csvContent, fileName);
 };
 
-/**
- * Export results with student details
- * @param {Array} results - Array of result objects with student data
- * @param {String} fileName - Name of the file to be downloaded
- */
 export const exportStudentResultsToCSV = (results, fileName = 'student_results.csv') => {
   if (!results || results.length === 0) {
     alert('No results to export');
@@ -73,11 +57,6 @@ export const exportStudentResultsToCSV = (results, fileName = 'student_results.c
   downloadCSV(csvContent, fileName);
 };
 
-/**
- * Helper function to trigger CSV download
- * @param {String} csvContent - CSV content string
- * @param {String} fileName - Name of the file
- */
 const downloadCSV = (csvContent, fileName) => {
   const element = document.createElement('a');
   const file = new Blob([csvContent], { type: 'text/csv' });
@@ -89,10 +68,6 @@ const downloadCSV = (csvContent, fileName) => {
   URL.revokeObjectURL(element.href);
 };
 
-/**
- * CAPTCHA component placeholder
- * This is ready for integration with a real CAPTCHA service like reCAPTCHA
- */
 export const CaptchaComponent = ({ onVerify, theme = 'light' }) => {
   return (
     <div style={{
@@ -127,8 +102,7 @@ export const CaptchaComponent = ({ onVerify, theme = 'light' }) => {
           </a>
         </div>
       </div>
-      
-      {/* TODO: Integrate with actual reCAPTCHA API */}
+
       <div style={{ marginTop: '10px', fontSize: '12px', color: '#999' }}>
         Ready for reCAPTCHA v2/v3 integration
       </div>

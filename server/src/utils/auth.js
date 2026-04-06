@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-// Generate JWT Token
 const generateToken = (userId, role) => {
   return jwt.sign(
     { userId, role },
@@ -10,7 +9,6 @@ const generateToken = (userId, role) => {
   );
 };
 
-// Verify JWT Token
 const verifyToken = (token) => {
   try {
     return jwt.verify(token, process.env.JWT_SECRET);
@@ -19,13 +17,11 @@ const verifyToken = (token) => {
   }
 };
 
-// Hash Password
 const hashPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 
-// Compare Password
 const comparePassword = async (password, hashedPassword) => {
   return await bcrypt.compare(password, hashedPassword);
 };

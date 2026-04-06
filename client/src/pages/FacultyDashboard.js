@@ -126,13 +126,7 @@ const FacultyDashboard = () => {
                     <td>{result.marks}</td>
                     <td><strong>{result.grade}</strong></td>
                     <td>
-                      <span style={{
-                        padding: '5px 10px',
-                        borderRadius: '4px',
-                        backgroundColor: result.status === 'pass' ? '#d4edda' : '#f8d7da',
-                        color: result.status === 'pass' ? '#155724' : '#721c24',
-                        fontSize: '0.9rem'
-                      }}>
+                      <span className={result.status === 'pass' ? 'status-pass' : 'status-fail'}>
                         {result.status.toUpperCase()}
                       </span>
                     </td>
