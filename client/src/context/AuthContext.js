@@ -37,12 +37,12 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const response = await authAPI.login({ email, password });
       const { token, user } = response.data;
-      
+
       localStorage.setItem('token', token);
       setToken(token);
       setUser(user);
       setError(null);
-      
+
       return { success: true, user };
     } catch (err) {
       const errorMsg = err.response?.data?.message || 'Login failed';
@@ -58,12 +58,12 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const response = await authAPI.register({ email, password, role, rollNumber, year });
       const { token, user } = response.data;
-      
+
       localStorage.setItem('token', token);
       setToken(token);
       setUser(user);
       setError(null);
-      
+
       return { success: true, user };
     } catch (err) {
       const errorMsg = err.response?.data?.message || 'Registration failed';
